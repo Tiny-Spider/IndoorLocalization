@@ -1,0 +1,16 @@
+# Ignore everything
+/*
+/*/
+
+# Except git files
+!.gitignore
+!.gitattributes
+!README.md
+
+# Except data folders
+!/Assets/
+!/ProjectSettings/
+
+# Ignore meta files for folders
+#*.meta
+#!*.*.meta
