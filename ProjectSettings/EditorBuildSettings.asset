@@ -45,13 +45,13 @@ EditorBuildSettings:
     path: Assets/Scenes/HumanSegmentation/HumanSegmentationImages.unity
     guid: ed5207d50697d40d688249cd6c59608b
   - enabled: 0
-    path: Assets/Scenes/ImageTracking/ImageTracking.unity
+    path: Assets/ImageTracking.unity
     guid: e0b018a3c3b5cfd4c8e316706ec0a18c
   - enabled: 0
     path: Assets/Scenes/LightEstimation.unity
     guid: 2f0cbc82480584c258f99f0d9e4ba302
   - enabled: 0
-    path: Assets/Scenes/Object Tracking/ObjectTracking.unity
+    path: Assets/ARFoundation/Scenes/Object Tracking/ObjectTracking.unity
     guid: 8f797cefb98fe43109524cbbcc8faafc
   - enabled: 0
     path: Assets/Scenes/Plane Detection/FeatheredPlanes.unity
