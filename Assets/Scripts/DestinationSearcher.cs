@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class DestinationSearcher : MonoBehaviour {
 	public Animator animator;
+
+	[Header("Searching")]
+	public InputField inputField;
 	public List<DestinationEntry> destinations = new List<DestinationEntry>();
 
 	public bool open = false;
@@ -24,5 +27,6 @@ public class DestinationSearcher : MonoBehaviour {
 	public void NavigateTo(DestinationEntry destination) {
 		Debug.Log("Navigate to: " + destination.text);
 		ToggleOpen();
+		inputField.text = string.Empty;
 	}
 }

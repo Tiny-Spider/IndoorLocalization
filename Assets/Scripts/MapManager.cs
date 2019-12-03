@@ -15,6 +15,8 @@ public class MapManager : MonoBehaviour {
 	public float scale = 100;
 	public Text debugText;
 
+	private TrackedObject lastTrackedObject;
+
 	void Start() {
 
 	}
@@ -32,7 +34,15 @@ public class MapManager : MonoBehaviour {
 		debug.AppendLine("TrackedObjects Length: " + trackedObjects.Length);
 
 		if (trackedObjects.Length > 0) {
-			TrackedObject trackedObject = trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Tracking, trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Limited, trackedObjects[0]));
+			TrackedObject trackedObject = trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Tracking, lastTrackedObject);
+			// TrackedObject trackedObject = trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Tracking, trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Limited, trackedObjects[0]));
+
+			if (trackedObject == null) {
+				return;
+			}
+
+			lastTrackedObject = trackedObject;
+
 			string name = trackedObject.trackedImage.referenceImage.name;
 			MapAnchor mapAchor = mapAnchors.First(x => x.name.Equals(name, System.StringComparison.InvariantCultureIgnoreCase));
 
