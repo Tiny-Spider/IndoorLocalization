@@ -9,6 +9,7 @@
 
 # Except data folders
 !/Assets/
+!/Packages/
 !/ProjectSettings/
 
 # Ignore meta files for folders

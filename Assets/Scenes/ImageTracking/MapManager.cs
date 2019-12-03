@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 public class MapManager : MonoBehaviour {
 	public Camera arCamera;
@@ -31,7 +32,7 @@ public class MapManager : MonoBehaviour {
 		debug.AppendLine("TrackedObjects Length: " + trackedObjects.Length);
 
 		if (trackedObjects.Length > 0) {
-			TrackedObject trackedObject = trackedObjects[0];
+			TrackedObject trackedObject = trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Tracking, trackedObjects.Find(x => x.trackedImage.trackingState == TrackingState.Limited, trackedObjects[0]));
 			string name = trackedObject.trackedImage.referenceImage.name;
 			MapAnchor mapAchor = mapAnchors.First(x => x.name.Equals(name, System.StringComparison.InvariantCultureIgnoreCase));
 
