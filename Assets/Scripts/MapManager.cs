@@ -47,36 +47,43 @@ public class MapManager : MonoBehaviour {
 			MapAnchor mapAchor = mapAnchors.First(x => x.name.Equals(name, System.StringComparison.InvariantCultureIgnoreCase));
 
 			// Get the positions
-			Vector2 trackedObjectPosition = ToVector2(trackedObject.transform.position);
-			float trackedObjectRotation = Mathf.Atan2(trackedObject.transform.forward.x, trackedObject.transform.forward.z) * Mathf.Rad2Deg;
+			Vector2 trackedPosition = ToVector2(trackedObject.transform.position);
+			float trackedRotation = Mathf.Atan2(trackedObject.transform.forward.x, trackedObject.transform.forward.z) * Mathf.Rad2Deg;
 
 			Vector2 cameraPosition = ToVector2(arCamera.transform.position);
 			float cameraRotation = Mathf.Atan2(arCamera.transform.forward.x, arCamera.transform.forward.z) * Mathf.Rad2Deg;
 
-			Vector2 offset = trackedObjectPosition - cameraPosition;
-			Vector2 scaledOffset = offset * scale;
-			Vector2 achorPosition = mapAchor.position.position;
+			Vector2 cameraOffsetPosition = trackedPosition - cameraPosition;
 
-			float achorRotation = mapAchor.position.rotation.eulerAngles.z;
-			Vector2 userPosition = achorPosition + Rotate(scaledOffset, achorRotation);
-			float userRoation = (cameraRotation + mapAchor.position.rotation.eulerAngles.z + 180) % 360;
+			Vector2 mapAchorPosition = mapAchor.position.position;
+			float mapAchorRotation = mapAchor.position.rotation.eulerAngles.z;
 
-			playerDot.rotation = Quaternion.Euler(0, 0, userRoation);
-			playerDot.position = userPosition;
+
+			Vector3 mapUserPosition = RotateAroundPivot(cameraOffsetPosition, Vector3.zero, -trackedRotation);
+					mapUserPosition = RotateAroundPivot(cameraOffsetPosition, Vector3.zero, mapAchorRotation);
+
+			mapUserPosition *= scale;
+			mapUserPosition += (Vector3)mapAchorPosition;
+			//Vector2 userPosition = mapAchorPosition + Rotate(scaledOffset, mapAchorRotation);
+
+			//Vector2 offset = trackedObjectPosition - cameraPosition;
+			//Vector2 scaledOffset = offset * scale;
+			//float userRoation = (cameraRotation + mapAchor.position.rotation.eulerAngles.z + 180) % 360;
+
+			//playerDot.rotation = Quaternion.Euler(0, 0, userRoation);
+			playerDot.position = mapUserPosition;
 
 			debug.AppendLine("TrackedObject name: " + name);
 			debug.AppendLine("TrackedObject tracked: " + trackedObject.trackedImage.trackingState.ToString());
 			debug.AppendLine("mapAchor z: " + mapAchor.position.rotation.eulerAngles.z);
-			debug.AppendLine("trackedObjectPosition: " + trackedObjectPosition);
-			debug.AppendLine("trackedObjectRotation: " + trackedObjectRotation);
+			debug.AppendLine("trackedPosition: " + trackedPosition);
+			debug.AppendLine("trackedRotation: " + trackedRotation);
 			debug.AppendLine("cameraPosition: " + cameraPosition);
 			debug.AppendLine("cameraRotation: " + cameraRotation);
-			debug.AppendLine("offset: " + offset);
-			debug.AppendLine("scaledOffset: " + scaledOffset);
-			debug.AppendLine("achorPosition: " + achorPosition);
-			debug.AppendLine("achorRotation: " + achorRotation);
-			debug.AppendLine("userPosition: " + userRoation);
-			debug.AppendLine("userRoation: " + userPosition);
+			debug.AppendLine("cameraOffsetPosition: " + cameraOffsetPosition);
+			debug.AppendLine("mapAchorPosition: " + mapAchorPosition);
+			debug.AppendLine("mapAchorRotation: " + mapAchorRotation);
+			debug.AppendLine("mapUserPosition: " + mapUserPosition);
 		}
 
 		debugText.text = debug.ToString();
@@ -84,6 +91,10 @@ public class MapManager : MonoBehaviour {
 
 	Vector2 ToVector2(Vector3 vector) {
 		return new Vector2(vector.x, vector.z);
+	}
+
+	public static Vector3 RotateAroundPivot(Vector3 Point, Vector3 Pivot, float rotation) {
+		return Quaternion.Euler(new Vector3(0, 0, rotation)) * (Point - Pivot) + Pivot;
 	}
 
 	Vector2 Rotate(Vector2 v, float degrees) {
