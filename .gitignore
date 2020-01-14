@@ -9,6 +9,7 @@
 
 # Except data folders
 !/Assets/
+!/Builds/
 !/Packages/
 !/ProjectSettings/
 
